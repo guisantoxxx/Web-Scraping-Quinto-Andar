@@ -36,4 +36,5 @@ for col in df.select_dtypes(include=['object']).columns:
 #print(df.columns)      
 
 print(df)
+df.to_csv('quintoAndar.csv')
 

@@ -12,7 +12,7 @@ links = ['https://www.quintoandar.com.br/comprar/imovel/belo-horizonte-mg-brasil
 estados = ['MG', 'SP', 'SP', 'RJ', 'RJ', 'SP', 'SP', 'SP', 'RJ', 'RJ', 'RJ']
 
 for i in range(len(links)):
-    executar_scraping(links[i], estados[i], random.randint(15, 20))
+    executar_scraping(links[i], estados[i], 50)
     
 
 df = pd.read_csv('quintoAndar.csv')

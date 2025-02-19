@@ -41,7 +41,7 @@ def executar_scraping(url, estado, n_cliques):
     # Aumentar o range para aumentar o numero de imoveis
     for i in range(n_cliques):
         try:
-            see_more_button = WebDriverWait(driver, 10).until(
+            see_more_button = WebDriverWait(driver, 1).until(
                 EC.element_to_be_clickable((By.ID, "see-more"))
             )
              # Clica no botão
@@ -162,8 +162,11 @@ def executar_scraping(url, estado, n_cliques):
         num_banheiros[i] = banheiro.split()[0]
         
     for i, preco in enumerate(precos):
-        partes = preco.split('\xa0', 1)
-        precos[i] = partes[1]
+        try:
+            partes = preco.split('\xa0', 1)
+            precos[i] = partes[1]
+        except:
+            precos[i] = np.nan
         
     # função que converte os  tempos de publicação em datas
 
@@ -271,6 +274,7 @@ def executar_scraping(url, estado, n_cliques):
         result = pd.concat([csv, dados], ignore_index=True)
     
         result.to_csv('quintoAndar.csv', index=False)
+        print(f'Dados de {url} coletados')
     except:
         dados.to_csv('quintoAndar.csv')
         print("Arquivo não encontrado. Criando um novo arquivo CSV.")

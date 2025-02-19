@@ -1,6 +1,7 @@
 from execução_scraping import *
 import pandas as pd
 import random
+from tratamento import *
 
 
 links = ['https://www.quintoandar.com.br/comprar/imovel/belo-horizonte-mg-brasil', 'https://www.quintoandar.com.br/comprar/imovel/sao-paulo-sp-brasil',
@@ -25,6 +26,7 @@ for i in range(len(links)):
 df = pd.read_csv('quintoAndar.csv')
 df = df.drop(columns=['Unnamed: 0'])
 df = df.drop_duplicates()
-df.to_csv('quintoAndar.csv')
+
+trata_dados_csv(df, 'quintoAndarTratado.csv')
 
 driver.quit()

@@ -1,40 +1,44 @@
 import unicodedata
 import pandas as pd
 
-
-#Função pra remover acentos
 def remove_accents(text):
+    """
+    Remove acentos de uma string, se ela for do tipo str.
+    """
     if isinstance(text, str):
-        # Normaliza o texto para decompor os acentos
         nfkd_form = unicodedata.normalize('NFKD', text)
-        # Remove os caracteres de acento (combining characters)
         return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
     return text
 
-#Pegando o csv
-df = pd.read_csv('quintoAndar.csv')
-
-#Tirar as colunas "Unnamed"
-df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
-
-# Aplica a remoção de acentos para todas as colunas que possuem dados textuais
-for col in df.select_dtypes(include=['object']).columns:
-    df[col] = df[col].apply(remove_accents)
-
-#Colocar tudo minúsculo
-for col in df.select_dtypes(include='object').columns:
-    df[col] = df[col].str.lower()
+def process_csv(df, output_file):
+    """
+    Lê um arquivo CSV, realiza transformações nos dados e salva o resultado em outro CSV.
     
-#Dropa nulos
-df.dropna(inplace=True)
-
-# Tirar caracteres especiais
-for col in df.select_dtypes(include=['object']).columns:
-    df[col] = df[col].str.replace(r"[()\[\]{}]", "", regex=True)
-
-#print(df.head())       
-#print(df.columns)      
-
-print(df)
-df.to_csv('quintoAndar.csv')
+    Transformações realizadas:
+      - Remove colunas cujo nome inicia com "Unnamed".
+      - Remove acentos dos textos.
+      - Converte textos para letras minúsculas.
+      - Remove linhas com valores nulos.
+      - Remove caracteres especiais: ( ) [ ] { }.
+    """
+    # Remove colunas "Unnamed"
+    df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+    
+    # Aplica a remoção de acentos para colunas de texto
+    for col in df.select_dtypes(include=['object']).columns:
+        df[col] = df[col].apply(remove_accents)
+    
+    # Converte todos os textos para minúsculo
+    for col in df.select_dtypes(include='object').columns:
+        df[col] = df[col].str.lower()
+    
+    # Remove linhas com valores nulos
+    df.dropna(inplace=True)
+    
+    # Remove caracteres especiais: ( ) [ ] { }
+    for col in df.select_dtypes(include=['object']).columns:
+        df[col] = df[col].str.replace(r"[()\[\]{}]", "", regex=True)
+    
+    # Salva o DataFrame processado em um novo CSV
+    df.to_csv(output_file, index=False)
 

@@ -14,6 +14,7 @@ def process_csv(df, output_file):
     """
     Lê um arquivo CSV, realiza transformações nos dados e salva o resultado em outro CSV.
     
+<<<<<<< HEAD
     Transformações realizadas:
       - Remove colunas cujo nome inicia com "Unnamed".
       - Remove acentos dos textos.
@@ -41,4 +42,21 @@ def process_csv(df, output_file):
     
     # Salva o DataFrame processado em um novo CSV
     df.to_csv(output_file, index=False)
+=======
+#Dropa nulos
+df.dropna(inplace=True)
+
+# Tirar caracteres especiais
+for col in df.select_dtypes(include=['object']).columns:
+    df[col] = df[col].str.replace(r"[()\[\]{}]", "", regex=True)
+
+#print(df.head())       
+#print(df.columns)     
+
+# dropa uma única cidade inválida
+df = df.drop(index=df[df['Cidade'] == 'taboao sao bernardo do campo'].index)
+
+print(df)
+df.to_csv('quintoAndar.csv')
+>>>>>>> 47e1a9e55c0099994a999785bc7199ea73cd42c4
 

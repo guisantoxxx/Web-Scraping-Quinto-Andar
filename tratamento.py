@@ -33,7 +33,10 @@ for col in df.select_dtypes(include=['object']).columns:
     df[col] = df[col].str.replace(r"[()\[\]{}]", "", regex=True)
 
 #print(df.head())       
-#print(df.columns)      
+#print(df.columns)     
+
+# dropa uma única cidade inválida
+df = df.drop(index=df[df['Cidade'] == 'taboao sao bernardo do campo'].index)
 
 print(df)
 df.to_csv('quintoAndar.csv')

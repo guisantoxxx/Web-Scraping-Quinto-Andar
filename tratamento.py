@@ -1,6 +1,8 @@
 import unicodedata
 import pandas as pd
 
+
+#Função pra remover acentos
 def remove_accents(text):
     if isinstance(text, str):
         # Normaliza o texto para decompor os acentos
@@ -9,28 +11,29 @@ def remove_accents(text):
         return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
     return text
 
-# Replace 'your_file.csv' with the path to your CSV file
+#Pegando o csv
 df = pd.read_csv('quintoAndar.csv')
 
+#Tirar as colunas "Unnamed"
 df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
 
 # Aplica a remoção de acentos para todas as colunas que possuem dados textuais
 for col in df.select_dtypes(include=['object']).columns:
     df[col] = df[col].apply(remove_accents)
 
+#Colocar tudo minúsculo
 for col in df.select_dtypes(include='object').columns:
     df[col] = df[col].str.lower()
     
+#Dropa nulos
 df.dropna(inplace=True)
 
-# Para cada coluna do tipo objeto (texto)
+# Tirar caracteres especiais
 for col in df.select_dtypes(include=['object']).columns:
     df[col] = df[col].str.replace(r"[()\[\]{}]", "", regex=True)
 
-print(df.head())       
-print(df.columns)      
-
-text_columns = ['Cidade', 'Estado', 'Regiao', 'Dia da Semana Extenso', 'Itens Disponivels', 'Itens Indisponíveis']
+#print(df.head())       
+#print(df.columns)      
 
 print(df)
 

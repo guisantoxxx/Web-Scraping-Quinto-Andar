@@ -17,7 +17,8 @@ links = ['https://www.quintoandar.com.br/comprar/imovel/belo-horizonte-mg-brasil
          'https://www.quintoandar.com.br/comprar/imovel/sao-leopoldo-rs-brasil',
          'https://www.quintoandar.com.br/comprar/imovel/contagem-mg-brasil'
          ]
-    estados = ['MG', 'SP', 'SP', 'RJ', 'RJ', 'SP', 'SP', 'SP', 'RJ', 'RJ', 'RJ', 'RS', 'RS', 'SP', 'RS', 'RS', 'MG']
+    
+estados = ['MG', 'SP', 'SP', 'RJ', 'RJ', 'SP', 'SP', 'SP', 'RJ', 'RJ', 'RJ', 'RS', 'RS', 'SP', 'RS', 'RS', 'MG']
 
 for i in range(len(links)):
     executar_scraping(links[i], estados[i], 50)

@@ -39,6 +39,12 @@ def trata_dados_csv(df, output_file):
     # Remove caracteres especiais: ( ) [ ] { }
     for col in df.select_dtypes(include=['object']).columns:
         df[col] = df[col].str.replace(r"[()\[\]{}]", "", regex=True)
+        
+    # Remove anuncios repetidos que apenas alterando o preco
+    cols_para_verificar = df.columns.difference(['Preco']).tolist()
+
+    # Remover duplicatas, mantendo a primeira ocorrência
+    df = df.drop_duplicates(subset=cols_para_verificar, keep='first')
     
     # Salva o DataFrame processado em um novo CSV
     df.to_csv(output_file, index=False)

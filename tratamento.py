@@ -40,7 +40,7 @@ def trata_dados_csv(df, output_file):
     for col in df.select_dtypes(include=['object']).columns:
         df[col] = df[col].str.replace(r"[()\[\]{}]", "", regex=True)
         
-    # Remove anuncios repetidos que apenas alterando o preco
+    # Remove anuncios repetidos que apenas alteram o preco
     cols_para_verificar = df.columns.difference(['Preco']).tolist()
 
     # Remover duplicatas, mantendo a primeira ocorrência
